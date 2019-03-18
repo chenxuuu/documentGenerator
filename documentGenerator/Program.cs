@@ -1,4 +1,9 @@
-﻿using System;
+﻿using NLua;
+using System;
+using System.Collections;
+using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace documentGenerator
 {
@@ -6,7 +11,77 @@ namespace documentGenerator
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            string libFolder = @"D:\Luat_Air202\script_LuaTask\lib";//args[0];
+            string eluaFolder = @"D:\OneDrive\同步文件夹\luat_desktop\NZ_CP_2.171.000_SDK_TX\elua";//args[1];
+            Console.WriteLine($"lib folder: {libFolder}, elua folder: {eluaFolder}");
+
+            //注册编码模块
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
+            string wikiLua = "";
+            foreach (var i in GetFiles(libFolder, "lua"))
+            {
+                wikiLua += GetComments(i, "UTF-8")+"\r\n";
+            }
+            foreach (var i in GetFiles(eluaFolder, "c"))
+                Console.WriteLine(GetComments(i,"GB2312"));
+
+            Console.WriteLine(wikiLua);
+            File.WriteAllText("luatApi.md", wikiLua);
+
+            Console.WriteLine("done!");
+        }
+
+
+        /// <summary>
+        /// 获取文件夹下所有符合标准的文件
+        /// 包括子文件夹
+        /// </summary>
+        /// <param name="path">路径</param>
+        /// <param name="type">拓展名</param>
+        /// <returns></returns>
+        private static string[] GetFiles(string path,string type)
+        {
+            ArrayList files = new ArrayList();
+            if (!Directory.Exists(path))
+            {
+                Console.WriteLine($"folder {path} not exist");
+                return (string[])files.ToArray(typeof(string));
+            }
+
+            foreach(var i in Directory.GetDirectories(path))
+            {
+                files.AddRange(GetFiles(i, type));
+            }
+            foreach(var i in Directory.GetFiles(path))
+            {
+                if(i.LastIndexOf("."+type) == i.Length-type.Length-1)
+                    files.Add(i);
+            }
+            return (string[])files.ToArray(typeof(string));
+        }
+
+        private static string GetComments(string path,string encoding)
+        {
+            var lua = new Lua();
+            lua.State.Encoding = Encoding.UTF8;
+            lua["result"] = "";
+            lua.DoString("lines = {}");
+            LuaTable t = (LuaTable)lua["lines"];
+            
+            int count = 1;
+            if(!File.Exists(path))
+            {
+                Console.WriteLine($"file {path} not exist");
+                return "";
+            }
+            foreach(var i in File.ReadAllLines(path, System.Text.Encoding.GetEncoding(encoding)))
+            {
+                t[count++] = i;
+            }
+            lua.DoFile("run.lua");
+
+            return lua["result"].ToString();
         }
     }
 }
