@@ -12,8 +12,7 @@ namespace documentGenerator
         static void Main(string[] args)
         {
             string libFolder = @"D:\Luat_Air202\script_LuaTask\lib";//args[0];
-            string eluaFolder = @"D:\OneDrive\同步文件夹\luat_desktop\NZ_CP_2.171.000_SDK_TX\elua";//args[1];
-            Console.WriteLine($"lib folder: {libFolder}, elua folder: {eluaFolder}");
+            Console.WriteLine($"lib folder: {libFolder}");
 
             //注册编码模块
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
@@ -28,11 +27,9 @@ Luat的API分为三种：第一种直接用Lua语言实现的，在lib目录下�
             {
                 wikiLua += GetComments(i, "UTF-8")+"\r\n";
             }
-            foreach (var i in GetFiles(eluaFolder, "c"))
-                Console.WriteLine(GetComments(i,"GB2312"));
-
+            
             Console.WriteLine(wikiLua);
-            File.WriteAllText("luatApi.md", wikiLua);
+            File.WriteAllText("luatApi.md", wikiLua + File.ReadAllText("static.md"));
 
             Console.WriteLine("done!");
         }
