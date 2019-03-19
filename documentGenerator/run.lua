@@ -112,7 +112,7 @@ while lastLine < #lines do
             end
             table.insert(text, "")
 
-            if last ~= #all-1 then
+            if last ~= #all+1 then
                 --筛选出示例参数
                 local example = {}
                 for i=last,#all do
