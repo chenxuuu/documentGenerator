@@ -41,7 +41,7 @@ while lastLine < #lines do
             end
         end
         if functionName then--匹配成功
-            functionName = functionName:gsub(" *,"," ,")
+            functionName = functionName:gsub(" *, *",", ")
             --加上函数开头
             table.insert(text, "### "..moduleName.."."..functionName)
             table.insert(text, "")
