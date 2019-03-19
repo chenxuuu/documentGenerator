@@ -61,8 +61,9 @@ while lastLine < #lines do
                         --获取参数信息与解释
                         local ft,fi = all[i]:match("%-%- *@(%w+) (.+)")
                         if not ft then
-                            ft,fi = all[i]:match("%-%- *@(%w+)%[opt=nil%] (.+)")
-                            if fi then fi = "**可选参数**，"..fi end
+                            ft,fi = all[i]:match("%-%- *@(%w+)%[opt=.+%] (.+)")
+                            local choseType = all[i]:match("%-%- *@%w+%[opt=(.+)%] .+")
+                            if fi then fi = "**可选参数，默认为`"..(choseType or "nil").."`**，"..fi end
                         end
                         if ft then
                             table.insert(para, {type=ft,info=(fi or "")})
