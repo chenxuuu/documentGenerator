@@ -1,10 +1,13 @@
 local text = {"",}
 local lastLine = 1
 
+local moduleName
+
 --获取本文件的注释
 local moduleInfo = {lines[1]:match("%-%-%- *(.+)"),}
 for i=2,#lines do
     if lines[i]:find("@module") then
+        moduleName = lines[i]:match("%-%- *@module *(.+)")
         table.insert(text, "## "..lines[i]:match("%-%- *@module *(.+)"))
         table.insert(text, "")
         lastLine = i
@@ -39,7 +42,7 @@ while lastLine < #lines do
         end
         if functionName then--匹配成功
             --加上函数开头
-            table.insert(text, "### "..functionName)
+            table.insert(text, "### "..moduleName.."."..functionName)
             table.insert(text, "")
             table.insert(text, functionInfo)
             table.insert(text, "")
@@ -50,7 +53,7 @@ while lastLine < #lines do
             --筛选出传入参数值
             local para = {}
             for i=last,#all do
-                if all[i]:find("%-%- *@return") == 1 then
+                if all[i]:find("%-%- *@return") == 1 or all[i]:find("%-%- *@usage") == 1 then
                     last = i
                     break
                 else
@@ -109,7 +112,7 @@ while lastLine < #lines do
             end
             table.insert(text, "")
 
-            if last ~= #all then
+            if last ~= #all-1 then
                 --筛选出示例参数
                 local example = {}
                 for i=last,#all do
