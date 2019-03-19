@@ -41,6 +41,7 @@ while lastLine < #lines do
             end
         end
         if functionName then--匹配成功
+            functionName = functionName:gsub(" *,"," ,")
             --加上函数开头
             table.insert(text, "### "..moduleName.."."..functionName)
             table.insert(text, "")
@@ -117,10 +118,14 @@ while lastLine < #lines do
                 --筛选出示例参数
                 local example = {}
                 for i=last,#all do
+                    local usage
                     if all[i]:find("%-%- *@usage.+") == 1 then
-                        table.insert(example, all[i]:match("%-%- *@usage *(.+)") or "")
+                        usage = all[i]:match("%-%- *@usage *(.+)") or ""
                     elseif all[i]:find("%-%- *.+") == 1 and all[i]:find("%-%- *@usage") ~= 1 and all[i]:find("%-%- *@return") ~= 1 then
-                        table.insert(example, all[i]:match("%-%- *(.+)") or "")
+                        usage = all[i]:match("%-%- *(.+)") or ""
+                    end
+                    if usage and usage:gsub(" *","") ~= "" then--过滤掉空行
+                        table.insert(example, usage)
                     end
                     if i == #all then last = i end--没匹配到下一个，避免出错，直接结束本区块
                 end
