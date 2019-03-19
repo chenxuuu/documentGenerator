@@ -1,6 +1,6 @@
 # documentGenerator
 
-[wiki.openluat.com](wiki.openluat.com) 接口文档自动生成工具
+[wiki.openluat.com](http://wiki.openluat.com) 接口文档自动生成工具
 
 目标是完全ldoc注释格式
 

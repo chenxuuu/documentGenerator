@@ -119,20 +119,29 @@ while lastLine < #lines do
                 for i=last,#all do
                     if all[i]:find("%-%- *@usage.+") == 1 then
                         table.insert(example, all[i]:match("%-%- *@usage *(.+)") or "")
-                    elseif all[i]:find("%-%- *.+") == 1 and all[i]:find("%-%- *@usage") ~= 1 then
+                    elseif all[i]:find("%-%- *.+") == 1 and all[i]:find("%-%- *@usage") ~= 1 and all[i]:find("%-%- *@return") ~= 1 then
                         table.insert(example, all[i]:match("%-%- *(.+)") or "")
                     end
                     if i == #all then last = i end--没匹配到下一个，避免出错，直接结束本区块
                 end
+
+                --第一个字符为中文的，该行直接注释掉
+                for i=1,#example do
+                    local first = example[i]:byte()
+                    if not (first>0 and first<=127) then
+                        example[i] = "-- "..example[i]
+                    end
+                end
+
                 table.insert(text, "* 例子")
                 table.insert(text, "")
-                table.insert(text, "```lua")
                 if #example ~= 0 then
+                    table.insert(text, "```lua")
                     table.insert(text, table.concat(example,"\r\n"))
+                    table.insert(text, "```")
                 else
                     table.insert(text, "无")
                 end
-                table.insert(text, "```")
                 table.insert(text, "")
             end
 
