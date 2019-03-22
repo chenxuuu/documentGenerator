@@ -43,7 +43,8 @@ while lastLine < #lines do
         if functionName then--匹配成功
             functionName = functionName:gsub(" *, *",", ")
             --加上函数开头
-            if functionName:find("%.") or functionName:find(":") then
+            local functionHead = functionName:match("(.+)%(")
+            if functionHead:find("%.") or functionHead:find(":") then
                 table.insert(text, "### "..functionName)
             else
                 table.insert(text, "### "..moduleName.."."..functionName)
