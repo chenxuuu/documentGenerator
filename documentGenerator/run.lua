@@ -23,16 +23,22 @@ table.insert(text, "")
 --每个函数循环处理
 while lastLine < #lines do
     --匹配注释第一行，开始处理该函数
-    if lines[lastLine]:find("%-%-%- *.+") == 1 and not lines[lastLine]:find("%-%-%-%-") and lines[lastLine+1]:find("%-%- *.+") == 1 then
+    if lines[lastLine]:find("%-%-%- *.+") == 1 and not lines[lastLine]:find("%-%-%-%-") and lines[lastLine+1]:find("%-%-.*") == 1 then
         --函数解释
         local functionInfo = lines[lastLine]:match("%-%-%- *(.+)")
         --table.insert(text, functionInfo)
-        local functionName
+        local functionName--匹配的函数名
+        local arg--匹配的变量名
         local all = {}
         for i=lastLine+1,#lines do
             if lines[i]:find("function ") == 1 then
                 lastLine = i+2
                 functionName = lines[i]:match("function *(.+)")
+                break
+            elseif lines[i]:find("%w+ *=") == 1 then--匹配常量声明
+                lastLine = i+1
+                arg = lines[i]:match("(%w+) *=")
+                print(arg)
                 break
             elseif lines[i]:find("%-%-%- *.+") == 1 then
                 break
@@ -126,6 +132,8 @@ while lastLine < #lines do
                     local usage
                     if all[i]:find("%-%- *@usage.+") == 1 then
                         usage = all[i]:match("%-%- *@usage *(.+)") or ""
+                    elseif all[i]:find("%-%- *@see") == 1 then
+                        usage = "--另见："..(all[i]:match("%-%- *@see *(.+)") or "")
                     elseif all[i]:find("%-%- *.+") == 1 and all[i]:find("%-%- *@usage") ~= 1 and all[i]:find("%-%- *@return") ~= 1 then
                         usage = all[i]:match("%-%- *(.+)") or ""
                     end
@@ -157,6 +165,16 @@ while lastLine < #lines do
 
 
 
+            table.insert(text, "---")
+            table.insert(text, "")
+        elseif arg then
+            table.insert(text, "### "..moduleName.."."..arg)
+            table.insert(text, "")
+            table.insert(text, "常量值，"..functionInfo)
+            table.insert(text, "")
+            local argInfo = table.concat(all, "\n"):gsub("%-%- *","")
+            table.insert(text, argInfo)
+            table.insert(text, "")
             table.insert(text, "---")
             table.insert(text, "")
         else
