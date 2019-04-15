@@ -35,6 +35,11 @@ while lastLine < #lines do
                 lastLine = i+2
                 functionName = lines[i]:match("function *(.+)")
                 break
+            elseif lines[i]:find(".*%..* *= *function *%(") == 1 then
+                lastLine = i+2
+                local funcVars = lines[i]:match(".*%..* *= *function *(.*)")
+                functionName = lines[i]:match("(.*%..*) *= *function *%(")..funcVars
+                break
             elseif lines[i]:find("%w+ *=") == 1 then--匹配常量声明
                 lastLine = i+1
                 arg = lines[i]:match("(%w+) *=")

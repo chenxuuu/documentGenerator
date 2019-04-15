@@ -2,7 +2,7 @@
 
 [wiki.openluat.com](http://wiki.openluat.com) 接口文档自动生成工具
 
-目标是完全ldoc注释格式
+目标是完全适应ldoc注释格式
 
 ## 逻辑
 
