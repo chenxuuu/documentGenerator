@@ -16,7 +16,7 @@ for i=2,#lines do
         table.insert(moduleInfo, lines[i]:match("%-%- *(.+)"))
     end
 end
-moduleInfo = table.concat( moduleInfo, "\r\n")
+moduleInfo = table.concat( moduleInfo, "\r\n\r\n")
 table.insert(text, moduleInfo)
 table.insert(text, "")
 
@@ -177,7 +177,7 @@ while lastLine < #lines do
             table.insert(text, "")
             table.insert(text, "常量值，"..functionInfo)
             table.insert(text, "")
-            local argInfo = table.concat(all, "\n"):gsub("%-%- *","")
+            local argInfo = table.concat(all, "\r\n\r\n"):gsub("%-%- *","")
             table.insert(text, argInfo)
             table.insert(text, "")
             table.insert(text, "---")
