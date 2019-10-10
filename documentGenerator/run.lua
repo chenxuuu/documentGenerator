@@ -34,6 +34,11 @@ while lastLine < #lines do
             if lines[i]:find("function ") == 1 then
                 lastLine = i+2
                 functionName = lines[i]:match("function *(.+)")
+                if functionName and functionName:find(" return ") then
+                    local ret = functionName:find(" return ")
+                    functionName = functionName:sub(1,ret-1)
+                end
+                --if moduleName == "gpsv3" then print("[debug]"..functionName) end
                 break
             elseif lines[i]:find(".*%..* *= *function *%(") == 1 then
                 lastLine = i+2
@@ -43,7 +48,7 @@ while lastLine < #lines do
             elseif lines[i]:find("%w+ *=") == 1 then--匹配常量声明
                 lastLine = i+1
                 arg = lines[i]:match("(%w+) *=")
-                print(arg)
+                --print(arg)
                 break
             elseif lines[i]:find("%-%-%- *.+") == 1 then
                 break
