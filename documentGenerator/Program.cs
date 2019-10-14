@@ -1,4 +1,4 @@
-﻿using NLua;
+using NLua;
 using System;
 using System.Collections;
 using System.IO;
@@ -17,7 +17,7 @@ namespace documentGenerator
             //注册编码模块
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
-            string wikiLua = @"# Luat API接口
+            string wikiLua = @"# Luat API接口 （2G）
 
 Luat的API分为三种：第一种直接用Lua语言实现的，在lib目录下，对开发者可见，。第二种是在用C语言实现的，在lod里面，对开发者不可见。这儿称前者为API，后者为扩展API，前两个库为Luat专用。第三种是Lua标准库，也就是Lua语言自带的，Lua语言通用。
 
@@ -32,6 +32,24 @@ Luat的API分为三种：第一种直接用Lua语言实现的，在lib目录下�
             
             //Console.WriteLine(wikiLua);
             File.WriteAllText("luatApi.md", wikiLua + File.ReadAllText("static.md"));
+
+            //////////////////////////////////////////////////////////
+
+            libFolder = args[1];
+            Console.WriteLine($"4G lib folder: {libFolder}");
+            wikiLua = @"# Luat API接口 （4G）
+
+Luat的API分为三种：第一种直接用Lua语言实现的，在lib目录下，对开发者可见，。第二种是在用C语言实现的，在blf里面，对开发者不可见。这儿称前者为API，后者为扩展API，前两个库为Luat专用。第三种是Lua标准库，也就是Lua语言自带的，Lua语言通用。
+
+";
+            files = GetFiles(libFolder, "lua");
+            files = files.OrderBy(p => p).ToArray();//排序
+            foreach (var i in files)
+            {
+                Console.WriteLine(i);
+                wikiLua += GetComments(i, "UTF-8") + "\r\n";
+            }
+            File.WriteAllText("luatApi4G.md", wikiLua + File.ReadAllText("static4G.md"));
 
             Console.WriteLine("done!");
         }
