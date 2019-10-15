@@ -20,6 +20,8 @@ moduleInfo = table.concat( moduleInfo, "\r\n\r\n")
 table.insert(text, moduleInfo)
 table.insert(text, "")
 
+print("moduleName"..moduleName)
+
 --每个函数循环处理
 while lastLine < #lines do
     --匹配注释第一行，开始处理该函数
@@ -58,6 +60,7 @@ while lastLine < #lines do
         end
         if functionName then--匹配成功
             functionName = functionName:gsub(" *, *",", ")
+            print("functionName"..functionName)
             --加上函数开头
             local functionHead = functionName:match("(.+)%(")
             if functionHead:find("%.") or functionHead:find(":") then
