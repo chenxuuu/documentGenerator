@@ -22,6 +22,7 @@ namespace documentGenerator
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
             string wikiLua = @"# Luat API接口 （2G）
+
 !!!important
 	本页面依据Github代码自动更新，最后更新时间：" + now.ToString("yyyy-MM-dd HH:mm:ss") + @"
 
