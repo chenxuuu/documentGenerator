@@ -22,8 +22,8 @@ namespace documentGenerator
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
             string wikiLua = @"# Luat API接口 （2G）
-
-> 本页面依据Github代码自动更新，最后更新时间：" + now.ToString("yyyy-MM-dd HH:mm:ss") + @"
+!!!important
+  本页面依据Github代码自动更新，最后更新时间：" + now.ToString("yyyy-MM-dd HH:mm:ss") + @"
 
 Luat的API分为三种：第一种直接用Lua语言实现的，在lib目录下，对开发者可见，。第二种是在用C语言实现的，在lod里面，对开发者不可见。这儿称前者为API，后者为扩展API，前两个库为Luat专用。第三种是Lua标准库，也就是Lua语言自带的，Lua语言通用。
 
@@ -45,7 +45,8 @@ Luat的API分为三种：第一种直接用Lua语言实现的，在lib目录下�
             Console.WriteLine($"4G lib folder: {libFolder}");
             wikiLua = @"# Luat API接口 （4G）
 
-> 本页面依据Github代码自动更新，最后更新时间：" + now.ToString("yyyy-MM-dd HH:mm:ss") + @"
+!!!important
+  本页面依据Github代码自动更新，最后更新时间：" + now.ToString("yyyy-MM-dd HH:mm:ss") + @"
 
 Luat的API分为三种：第一种直接用Lua语言实现的，在lib目录下，对开发者可见，。第二种是在用C语言实现的，在blf里面，对开发者不可见。这儿称前者为API，后者为扩展API，前两个库为Luat专用。第三种是Lua标准库，也就是Lua语言自带的，Lua语言通用。
 
