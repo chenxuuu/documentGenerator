@@ -1,5 +1,7 @@
 # documentGenerator
 
+[![Build status](https://ci.appveyor.com/api/projects/status/9bwynuhpaeptwxx9?svg=true)](https://ci.appveyor.com/project/chenxuuu/documentgenerator)
+
 [wiki.openluat.com](http://wiki.openluat.com) 接口文档自动生成工具
 
 目标是完全适应ldoc注释格式
