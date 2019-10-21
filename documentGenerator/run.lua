@@ -114,6 +114,9 @@ while lastLine < #lines do
             --筛选出返回值参数
             local returnInfo = {}
             for i=last,#all do
+                -- if functionName == "getState()" then
+                --     print(all[i])
+                -- end
                 if all[i]:find("%-%- *@return") == 1 then
                     table.insert(returnInfo, all[i]:match("%-%- *@return *(.+)") or "")
                 elseif all[i]:find("%-%- *@usage") == 1 then
@@ -121,7 +124,7 @@ while lastLine < #lines do
                     break
                 else
                     if returnInfo[#returnInfo] then
-                        returnInfo[#returnInfo] = returnInfo[#returnInfo].."<br>"..(all[i]:match("%-%- *@return *(.+)") or "")
+                        returnInfo[#returnInfo] = returnInfo[#returnInfo].."<br>"..(all[i]:match("%-%- *@return *(.+)") or all[i]:match("%-%- *(.+)") or "")
                     end
                 end
                 if i == #all then last = i end--没匹配到下一个，避免出错，直接结束本区块
