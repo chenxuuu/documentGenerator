@@ -11,17 +11,34 @@ namespace documentGenerator
     {
         static void Main(string[] args)
         {
-            string libFolder = args[0];
-            Console.WriteLine($"lib folder: {libFolder}");
-
+            string libFolder2g = null;
+            string libFolder4g = null;
+            switch (args[0].ToUpper())
+            {
+                case "2G":
+                    libFolder2g = args[1];
+                    break;
+                case "4G":
+                    libFolder4g = args[1];
+                    break;
+                default:
+                    libFolder2g = args[0];
+                    libFolder4g = args[1];
+                    break;
+            }
             //获取早八时区时间
             DateTime now = DateTime.UtcNow.AddHours(8);
-            
 
-            //注册编码模块
-            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+            if (libFolder2g != null)
+            {
+                Console.WriteLine($"lib folder: {libFolder2g}");
 
-            string wikiLua = @"# Luat API接口 （2G）
+
+
+                //注册编码模块
+                System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
+                string wikiLua = @"# Luat API接口 （2G）
 
 !!!important
 	本页面依据[Github代码](https://github.com/openLuat/Luat_2G_RDA_8955)自动更新，最后更新时间：[" + now.ToString("yyyy-MM-dd HH:mm:ss") + @"](https://ci.appveyor.com/project/chenxuuu/luat-2g-rda-8955)
@@ -29,22 +46,25 @@ namespace documentGenerator
 Luat的API分为三种：第一种直接用Lua语言实现的，在lib目录下，对开发者可见，。第二种是在用C语言实现的，在lod里面，对开发者不可见。这儿称前者为API，后者为扩展API，前两个库为Luat专用。第三种是Lua标准库，也就是Lua语言自带的，Lua语言通用。
 
 ";
-            var files = GetFiles(libFolder, "lua");
-            files = files.OrderBy(p => p).ToArray();//排序
-            foreach (var i in files)
-            {
-                Console.WriteLine(i);
-                wikiLua += GetComments(i, "UTF-8")+"\r\n";
+                var files = GetFiles(libFolder2g, "lua");
+                files = files.OrderBy(p => p).ToArray();//排序
+                foreach (var i in files)
+                {
+                    Console.WriteLine(i);
+                    wikiLua += GetComments(i, "UTF-8") + "\r\n";
+                }
+
+                //Console.WriteLine(wikiLua);
+                File.WriteAllText("luatApi.md", wikiLua + File.ReadAllText("static.md"));
             }
-            
-            //Console.WriteLine(wikiLua);
-            File.WriteAllText("luatApi.md", wikiLua + File.ReadAllText("static.md"));
+
 
             //////////////////////////////////////////////////////////
 
-            libFolder = args[1];
-            Console.WriteLine($"4G lib folder: {libFolder}");
-            wikiLua = @"# Luat API接口 （4G）
+            if (libFolder4g != null)
+            {
+                Console.WriteLine($"4G lib folder: {libFolder4g}");
+                string wikiLua = @"# Luat API接口 （4G）
 
 !!!important
 	本页面依据[Github代码](https://github.com/openLuat/Luat_4G_ASR_1802)自动更新，最后更新时间：[" + now.ToString("yyyy-MM-dd HH:mm:ss") + @"](https://ci.appveyor.com/project/chenxuuu/luat-4g-asr-1802)
@@ -52,14 +72,16 @@ Luat的API分为三种：第一种直接用Lua语言实现的，在lib目录下�
 Luat的API分为三种：第一种直接用Lua语言实现的，在lib目录下，对开发者可见，。第二种是在用C语言实现的，在blf里面，对开发者不可见。这儿称前者为API，后者为扩展API，前两个库为Luat专用。第三种是Lua标准库，也就是Lua语言自带的，Lua语言通用。
 
 ";
-            files = GetFiles(libFolder, "lua");
-            files = files.OrderBy(p => p).ToArray();//排序
-            foreach (var i in files)
-            {
-                Console.WriteLine(i);
-                wikiLua += GetComments(i, "UTF-8") + "\r\n";
+                var files = GetFiles(libFolder4g, "lua");
+                files = files.OrderBy(p => p).ToArray();//排序
+                foreach (var i in files)
+                {
+                    Console.WriteLine(i);
+                    wikiLua += GetComments(i, "UTF-8") + "\r\n";
+                }
+                File.WriteAllText("luatApi4G.md", wikiLua + File.ReadAllText("static4G.md"));
             }
-            File.WriteAllText("luatApi4G.md", wikiLua + File.ReadAllText("static4G.md"));
+
 
             Console.WriteLine("done!");
         }
