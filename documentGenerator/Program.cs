@@ -11,6 +11,13 @@ namespace documentGenerator
     {
         static void Main(string[] args)
         {
+            if(args[0] == "vscode")
+            {
+                Console.WriteLine("start vscode plugin json");
+                File.WriteAllText("lua.json", vscodeMaker(File.ReadAllText(args[1])));
+                return;
+            }
+
             string libFolder2g = null;
             string libFolder4g = null;
             switch (args[0].ToUpper())
@@ -115,6 +122,12 @@ Luat的API分为三种：第一种直接用Lua语言实现的，在lib目录下�
             return (string[])files.ToArray(typeof(string));
         }
 
+        /// <summary>
+        /// 获取注释生成文档
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="encoding"></param>
+        /// <returns></returns>
         private static string GetComments(string path,string encoding)
         {
             var lua = new Lua();
@@ -134,6 +147,23 @@ Luat的API分为三种：第一种直接用Lua语言实现的，在lib目录下�
                 t[count++] = i;
             }
             lua.DoFile("run.lua");
+
+            return lua["result"].ToString();
+        }
+
+
+        /// <summary>
+        /// 获取文档生成插件所需的json
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        private static string vscodeMaker(string text)
+        {
+            var lua = new Lua();
+            lua.State.Encoding = Encoding.UTF8;
+            lua["result"] = "";
+            lua["text"] = text;
+            lua.DoFile("vscode.lua");
 
             return lua["result"].ToString();
         }
