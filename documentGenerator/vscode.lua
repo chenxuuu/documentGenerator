@@ -22,11 +22,25 @@ local doc = text:split("\n")
 local last = {}
 for i=1,#doc do
     if doc[i]:find("### (.+)") == 1 then
-        last.body = doc[i]:match("### (.+)"):gsub("\r","")
-    elseif last.body and doc[i]:len() > 2 then
+        last.prefix = doc[i]:match("### (.+)"):gsub("\r","")
+    elseif last.prefix and doc[i]:len() > 2 then
         last.description = doc[i]:gsub("\r","")
-        last.prefix = last.body
-        rt[last.body] = last
+        if last.prefix:find("%(.+%)") then--对有参数的接口进行处理
+            local args = last.prefix:match("%(.+%)")
+            if not args:find(",") then--只有一个参数的情况
+                last.body = last.prefix:gsub("%((.+)%)","(${1:%1})")
+            else
+                local gt = args:sub(2,-2):split(",")
+                local tt = {}
+                for i=1,#gt do
+                    table.insert(tt,"${"..i..":"..gt[i].."}")
+                end
+                last.body = last.prefix:gsub("%((.+)%)","("..table.concat(tt,",")..")")
+            end
+        else
+            last.body = last.prefix
+        end
+        rt[last.prefix] = last
         print(last.body)
         last = {}
     end
