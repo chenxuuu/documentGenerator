@@ -23,9 +23,7 @@
 
 - 返回值
 
-  1：成功打开adc通道
-
-  0：其他
+1：成功打开adc通道<br>0：其他
 
 - 例子
 
@@ -54,9 +52,7 @@ adc.open(ADC_ID)
 
 - 返回值
 
-  | adcValue      | 原始数据ad值，无效值为0xFFFF         |
-  | ------------- | ------------------------------------ |
-  | **voltValue** | **电压值，单位为mv，无效值为0xFFFF** |
+adcValue,原始数据ad值，无效值为0xFFFF。voltValue,电压值，单位为mv，无效值为0xFFFF
 
 - 例子
 
@@ -115,10 +111,7 @@ apn 读取库
 
 - 返回值
 
-| **apn **      | apn名字    |
-| ------------- | ---------- |
-| **user **     | **用户名** |
-| **password ** | **密码**   |
+apn,apn名字<br>user,用户名<br>password,密码
 
 ------
 
@@ -148,9 +141,7 @@ apn 读取库
 
 - 返回值
 
-  true:播放成功
-
-  false:播放失败
+  true:播放成功<br>false:播放失败
 
 ------
 
@@ -209,9 +200,7 @@ apn 读取库
 
 - 返回值
 
-  1:成功
-
-  0:其他
+  1:成功<br>0:其他
 
 ### audiocore.setmicvol()
 
@@ -230,9 +219,7 @@ apn 读取库
 
 - 返回值
 
-  1:成功
-
-  0:其他
+  1:成功<br>0:其他
 
 ------
 
@@ -254,9 +241,7 @@ apn 读取库
 
 - 返回值
 
-  1:成功
-
-  0:其他
+  1:成功<br>0:其他
 
 ------
 
@@ -313,9 +298,7 @@ print(bit.bit(2))--参数是位数，作用是1向左移动两位，打印出4
 
 - 返回值
 
-  true:该位被置1
-
-  false:其他
+  true:该位被置1<br>false:其他
 
 - 例子
 
@@ -347,9 +330,7 @@ print(bit.isset(5,3))--返回返回false
 
 - 返回值
 
-  true:该位被置0
-
-  false:其他
+  true:该位被置0<br>false:其他
 
 - 例子
 
@@ -1511,11 +1492,7 @@ json解析
 
 - 返回值
 
-  解析内容，table类型
-
-  解析结果，true为成功，false为失败
-
-  错误信息
+  解析内容，table类型<br>解析结果，true为成功，false为失败<br>错误信息
 
 - 例子
 
@@ -1836,11 +1813,7 @@ print(pack.pack("A","LUAT"))
 
 - 返回值
 
-  | nextpos  | 字符串标记的位置   |
-  | -------- | ------------------ |
-  | **val1** | **第一个解包的值** |
-  | **val2** | **第二个解包的值** |
-  | **valn** | **第n个解包的值**  |
+  nextpos,字符串标记的位置<br>val1,第一个解包的值<br>val2,第二个解包的值<br>valn,第n个解包的值
 
 - 例子
 
@@ -2045,9 +2018,7 @@ pio.pin.setpull(pio.PULLUP,pio.P0_5)  --配置为上拉
 
 - 返回值
 
-  1:成功
-
-  0:失败
+  1:成功<br>0:失败
 
 ------
 
@@ -2172,44 +2143,7 @@ pmd.ldoset(5,pmd.LDO_VMMC)
 
 - 返回值
 
-  如果 msg 为 table 类型，msg 根据不同的消息 msg.id 会有不同的数据：
-
-  如果 msg 为 number 类型，msg 根据不同的消息 msg 会有不同的数据
-
-  1.rtos.MSG_TIMER 定时器超时消息
-  msg.timer_id 或者 msgpara 为超时的定时器 id
-
-  2.rtos.MSG_UART_RXDATA 串口 ATC 数据提醒
-  msg.uart_id 或者msgpara为收到的数据的串口id或者atc,收到该消息后可以通过uart.read
-  接口读取数据
-
-  3.rtos.MSG_KEYPAD 键盘消息,必须初始化按键(#rtos.init_module#)后才会有键盘消息
-
-  msg.pressed 按键按下/弹起
-
-  msg.key_matrix_row 按键所在行值
-
-  msg.key_matrix_col 按键所在列值
-
-  4.rtos.WAIT_MSG_TIMEOUT 等待消息超时
-
-  5.rtos.MSG_INT 中断消息
-
-  msg.int_id 中断 id
-
-  msg.int_resnum 中断 pin 脚编号
-
-  6.rtos.MSG_PMD 电源管理消息
-
-  msg.present 电池在位状态
-
-  msg.level 百分比 0-100
-
-  msg.voltage 电池电压
-
-  msg.charger 充电器在位状态
-
-  msg.state 充电状态:0-不在充电 1-充电中 2-充电停止
+  如果 msg 为 table 类型，msg 根据不同的消息 msg.id 会有不同的数据：<br>如果 msg 为 number 类型，msg 根据不同的消息 msg 会有不同的数据<br>1.rtos.MSG_TIMER 定时器超时消息<br>msg.timer_id 或者 msgpara 为超时的定时器 id<br>2.rtos.MSG_UART_RXDATA 串口 ATC 数据提醒<br>msg.uart_id 或者msgpara为收到的数据的串口id或者atc,收到该消息后可以通过uart.read<br>接口读取数据<br>3.rtos.MSG_KEYPAD 键盘消息,必须初始化按键(#rtos.init_module#)后才会有键盘消息<br>msg.pressed 按键按下/弹起<br>msg.key_matrix_row 按键所在行值<br>msg.key_matrix_col 按键所在列值<br>4.rtos.WAIT_MSG_TIMEOUT 等待消息超时<br>5.rtos.MSG_INT 中断消息<br>msg.int_id 中断 id<br>msg.int_resnum 中断 pin 脚编号<br>6.rtos.MSG_PMD 电源管理消息<br>msg.present 电池在位状态<br>msg.level 百分比 0-100<br>msg.voltage 电池电压<br>msg.charger 充电器在位状态<br>msg.state 充电状态:0-不在充电 1-充电中 2-充电停止
 
 ------
 
@@ -2272,14 +2206,7 @@ pmd.ldoset(5,pmd.LDO_VMMC)
 
 - 返回值
 
-  | rtos. POWERON_KEY(=0)           | 按键开机                  |
-  | ------------------------------- | ------------------------- |
-  | **rtos. POWERON_CHARGER(=1)**   | **充电开机**              |
-  | **rtos. POWERON_ALARM(=2)**     | **闹钟开机**              |
-  | **rtos. POWERON_RESTART(=3)**   | **软件重启开机**          |
-  | **rtos. POWERON_EXCEPTION(=6)** | **异常开机**              |
-  | **rtos. POWERON_HOST(=7)**      | **HOST 工具控制重启开机** |
-  | **rtos. POWERON_WATCHDOG(=8)**  | **其他原因**              |
+  rtos. POWERON_KEY(=0),按键开机<br>rtos. POWERON_CHARGER(=1),充电开机<br>rtos. POWERON_ALARM(=2),闹钟开机<br>rtos. POWERON_RESTART(=3),软件重启开机<br>rtos. POWERON_EXCEPTION(=6),异常开机<br>rtos. POWERON_HOST(=7),HOST 工具控制重启开机<br>rtos. POWERON_WATCHDOG(=8),其他原因
 
 ------
 
@@ -2466,9 +2393,7 @@ end
 
 - 返回值
 
-  布尔值
-
-  true表示创建成功，false表示失败
+  布尔值<br>true表示创建成功，false表示失败
 
 ------
 

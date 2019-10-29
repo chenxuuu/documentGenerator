@@ -17,13 +17,18 @@ end
 
 json = require("json")
 local rt = {}
-local doc = text:split("\n")
+local doc = text:gsub("\r",""):split("\n")
 
 local last = {}
 for i=1,#doc do
     if doc[i]:find("### (.+)") == 1 then
+        if last.prefix then
+            rt[last.prefix] = last
+            print(last.body)
+            last = {}
+        end
         last.prefix = doc[i]:match("### (.+)"):gsub("\r","")
-    elseif last.prefix and doc[i]:len() > 2 then
+    elseif last.prefix and doc[i]:len() > 2 and not last.description then
         last.description = doc[i]:gsub("\r","")
         if last.prefix:find("%(.+%)") then--对有参数的接口进行处理
             local args = last.prefix:match("%(.+%)")
@@ -40,10 +45,24 @@ for i=1,#doc do
         else
             last.body = last.prefix
         end
+    elseif doc[i]:find("%- 返回值") == 1 or doc[i]:find("%* 返回值") == 1 and last.description then
+        last.description = last.description.."\r\n返回值：\r\n"..doc[i+2]:gsub("<br>","\r\n")
+    elseif doc[i]:find("%- 例子") == 1 or doc[i]:find("%* 例子") == 1 and doc[i+2]:find("```") and last.description then
+        last.description = last.description.."\r\n例子：\r\n"
+        local tempi = i+3
+        while doc[tempi]:find("```") ~= 1 do
+            last.description = last.description..doc[tempi].."\r\n"
+            tempi = tempi + 1
+        end
         rt[last.prefix] = last
         print(last.body)
         last = {}
     end
+end
+if last.prefix then
+    rt[last.prefix] = last
+    print(last.body)
+    last = {}
 end
 
 result = json:encode(rt)
