@@ -67,7 +67,43 @@ while lastLine < #lines do
             end
             table.insert(text, "")
             table.insert(text, functionInfo)
+
+            --处理多行注释解释的情况
+            local infotemp = {}
+            for i=1,#all do
+                if all[i]:find("%-%- *[^-](.+)") == 1 and all[i]:find("%-%- *@") ~= 1 then
+                    table.insert(infotemp, all[i]:match("%-%- *(.+)"))
+                else
+                    break
+                end
+            end
+            if #infotemp > 0 then
+                table.insert(text, "")
+                table.insert(text, table.concat(infotemp,"<br>"))
+            end
             table.insert(text, "")
+
+            --防止参数信息不在最开头
+            local ptemp,rtemp,utemp = 0,0,0
+            for i=1,#all do
+                if all[i]:find("%-%- *@") == 1 then
+                    if all[i]:find("%-%- *@return") == 1 then
+                        rtemp = rtemp == 0 and i or rtemp
+                    elseif all[i]:find("%-%- *@usage") == 1 then
+                        utemp = utemp == 0 and i or utemp
+                    elseif ptemp == 0 and all[i]:find("%-%- *@see") ~= 1 then
+                        ptemp = i
+                    end
+                end
+            end
+            if ptemp > rtemp and rtemp ~= 0 and utemp ~= 0 then
+                print("wrong param "..tostring(ptemp)..","..tostring(rtemp)..","..tostring(utemp)..","..functionName)
+                --重新整理顺序，使之正确
+                for i=0,utemp - ptemp - 1 do
+                    table.insert(all,rtemp+i,table.remove(all,ptemp+i))
+                end
+            end
+
 
             --上次处理的函数信息行数
             local last = 1
