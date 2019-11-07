@@ -1580,6 +1580,33 @@ pio.pin.setpull(pio.PULLUP,pio.P0_5)  --配置为上拉
 --pio.pin.setpull(pio.NOPULL,pio.P0_5)  --不配置上下拉
 ```
 
+----
+
+### pio.pin.setdebounce()
+
+配置IO口消抖时间
+
+* 语法
+
+  `pio.pin.setdebounce(ms)`
+
+* 参数
+
+  | 参数   | 释义                                                         |
+  | ------ | ------------------------------------------------------------ |
+  | ms | 延时消抖时间，0为关闭消抖功能，开机后默认为20ms |
+
+* 返回值
+
+  无
+
+* 例子
+
+```lua
+pio.pin.setdebounce(20)  --延时消抖设置为20ms
+pio.pin.setdebounce(5)  --延时消抖设置为5ms
+pio.pin.setdebounce(0)  --关闭延时消抖功能
+```
 
 
 ------
