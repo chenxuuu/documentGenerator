@@ -805,7 +805,7 @@ CRC16校验算法
 
 - 语法
 
-  `crypto.crc16(crcMethod,originstr)`
+  `crypto.crc16(crcMethod,originstr,poly,initial,finally,inReverse,outReverse)`
 
 - 参数
 
@@ -813,6 +813,11 @@ CRC16校验算法
   | --------- | ---------------------------- |
   | crcMethod | string类型， 校验方法        |
   | originstr | string类型，计算校验的字符串 |
+  | poly      | *可选，默认0* |
+  | initial   | *可选，默认0* |
+  | finally   | *可选，默认0* |
+  | inReverse | *可选，默认0* |
+  | outReverse| *可选，默认0* |
 
 - 返回值
 
