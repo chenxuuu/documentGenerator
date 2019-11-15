@@ -45,6 +45,10 @@ while lastLine < #lines do
                 local funcVars = lines[i]:match(".*%..* *= *function *(.*)")
                 functionName = lines[i]:match("(.*%..*) *= *function *%(")..funcVars
                 break
+            elseif lines[i]:find("socket%.isReady") == 1 then--单独处理socket.isReady函数（太特殊了）
+                lastLine = i+2
+                functionName = "socket.isReady()"
+                break
             elseif lines[i]:find("%w+ *=") == 1 then--匹配常量声明
                 lastLine = i+1
                 arg = lines[i]:match("(%w+) *=")
