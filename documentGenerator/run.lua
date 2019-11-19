@@ -38,7 +38,15 @@ while lastLine < #lines do
                     local ret = functionName:find(" return ")
                     functionName = functionName:sub(1,ret-1)
                 end
-                --if moduleName == "gpsv3" then print("[debug]"..functionName) end
+                break
+            elseif lines[i]:find("local +function ") == 1 then
+                lastLine = i+2
+                functionName = lines[i]:match("function *(.+)")
+                functionName = functionName.." (local函数 无法被外部调用)"
+                if functionName and functionName:find(" return ") then
+                    local ret = functionName:find(" return ")
+                    functionName = functionName:sub(1,ret-1)
+                end
                 break
             elseif lines[i]:find(".*%..* *= *function *%(") == 1 then
                 lastLine = i+2
