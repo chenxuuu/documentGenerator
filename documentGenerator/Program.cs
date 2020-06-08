@@ -18,6 +18,13 @@ namespace documentGenerator
                 return;
             }
 
+            if (args[0] == "moon")
+            {
+                Console.WriteLine("start vscode plugin json moon");
+                File.WriteAllText("moon.json", vscodeMaker(File.ReadAllText(args[1]),"moon.lua"));
+                return;
+            }
+
             string libFolder2g = null;
             string libFolder4g = null;
             switch (args[0].ToUpper())
@@ -157,13 +164,13 @@ Luat的API分为三种：第一种直接用Lua语言实现的，在lib目录下�
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        private static string vscodeMaker(string text)
+        private static string vscodeMaker(string text, string file = "vscode.lua")
         {
             var lua = new Lua();
             lua.State.Encoding = Encoding.UTF8;
             lua["result"] = "";
             lua["text"] = text;
-            lua.DoFile("vscode.lua");
+            lua.DoFile(file);
 
             return lua["result"].ToString();
         }
