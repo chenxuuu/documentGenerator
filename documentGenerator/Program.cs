@@ -1,4 +1,5 @@
 using NLua;
+using RestSharp;
 using System;
 using System.Collections;
 using System.IO;
@@ -17,11 +18,22 @@ namespace documentGenerator
                 File.WriteAllText("lua.json", vscodeMaker(File.ReadAllText(args[1])));
                 return;
             }
-
-            if (args[0] == "moon")
+            else if (args[0] == "moon")
             {
                 Console.WriteLine("start vscode plugin json moon");
                 File.WriteAllText("moon.json", vscodeMaker(File.ReadAllText(args[1]),"moon.lua"));
+                return;
+            }
+            else if (args[0] == "qpy")
+            {
+                Console.WriteLine("start vscode plugin json QuecPython");
+
+                var client = new RestClient();
+                client.BaseUrl = new Uri("http://qpy.quectel.com/wiki/zh-cn/api/README.md");
+                var request = new RestRequest(Method.GET);
+                var response = client.Execute(request);
+
+                File.WriteAllText("qpy.json", vscodeMaker(response.Content, "qpy.lua"));
                 return;
             }
 
