@@ -39,6 +39,7 @@ namespace documentGenerator
 
             string libFolder2g = null;
             string libFolder4g = null;
+            string libFoldercat1 = null;
             switch (args[0].ToUpper())
             {
                 case "2G":
@@ -46,6 +47,9 @@ namespace documentGenerator
                     break;
                 case "4G":
                     libFolder4g = args[1];
+                    break;
+                case "CAT1":
+                    libFoldercat1 = args[1];
                     break;
                 default:
                     libFolder2g = args[0];
@@ -108,6 +112,27 @@ Luat的API分为三种：第一种直接用Lua语言实现的，在lib目录下�
                 File.WriteAllText("luatApi4G.md", wikiLua + File.ReadAllText("static4G.md"));
             }
 
+
+            if (libFoldercat1 != null)
+            {
+                Console.WriteLine($"cat1 lib folder: {libFoldercat1}");
+                string wikiLua = @"# Luat API接口 （4G）
+
+!!!important
+	本页面接口为CAT1模块（Air72xUx）接口文档。本页面依据Github代码自动更新，最后更新时间：[" + now.ToString("yyyy-MM-dd HH:mm:ss") + @"](https://ci.appveyor.com/project/chenxuuu/luat-4g-asr-1802)
+
+Luat的API分为三种：第一种直接用Lua语言实现的，在lib目录下，对开发者可见，。第二种是在用C语言实现的，在blf里面，对开发者不可见。这儿称前者为API，后者为扩展API，前两个库为Luat专用。第三种是Lua标准库，也就是Lua语言自带的，Lua语言通用。
+
+";
+                var files = GetFiles(libFoldercat1, "lua");
+                files = files.OrderBy(p => p).ToArray();//排序
+                foreach (var i in files)
+                {
+                    Console.WriteLine(i);
+                    wikiLua += GetComments(i, "UTF-8") + "\r\n";
+                }
+                File.WriteAllText("luatApi_CAT1.md", wikiLua + File.ReadAllText("static.md"));
+            }
 
             Console.WriteLine("done!");
         }
